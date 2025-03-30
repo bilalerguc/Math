@@ -1,0 +1,182 @@
+\documentclass{article}
+\usepackage[english]{babel}
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{emoji}
+
+\makeatletter
+% we use \prefix@<level> only if it is defined
+\renewcommand{\@seccntformat}[1]{%
+  \ifcsname prefix@#1\endcsname
+    \csname prefix@#1\endcsname
+  \else
+    \csname the#1\endcsname\quad
+  \fi}
+% define \prefix@section
+\newcommand\prefix@section{}
+\newcommand{\prefix@subsection}{\thesubsection\ - }
+\newcommand{\prefix@subsubsection}{\thesubsubsection\ - }
+\renewcommand{\thesubsection}{\arabic{subsection}}
+\makeatother
+
+
+
+\usepackage{tcolorbox}
+\tcbuselibrary{minted,breakable,xparse,skins}
+
+\definecolor{bg}{gray}{0.95}
+\DeclareTCBListing{mintedbox}{O{}m!O{}}{%
+  breakable=true,
+  listing engine=minted,
+  listing only,
+  minted language=#2,
+  minted style=default,
+  minted options={%
+    linenos,
+    gobble=0,
+    breaklines=true,
+    breakafter=,,
+    fontsize=\small,
+    numbersep=8pt,
+    #1},
+  boxsep=0pt,
+  left skip=0pt,
+  right skip=0pt,
+  left=25pt,
+  right=0pt,
+  top=3pt,
+  bottom=3pt,
+  arc=5pt,
+  leftrule=0pt,
+  rightrule=0pt,
+  bottomrule=2pt,
+  toprule=2pt,
+  colback=bg,
+  colframe=red!70,
+  enhanced,
+  overlay={%
+    \begin{tcbclipinterior}
+    \fill[red!20!white] (frame.south west) rectangle ([xshift=20pt]frame.north west);
+    \end{tcbclipinterior}},
+  #3}
+
+
+
+
+
+
+
+
+
+\title{On a neat problem \emoji{smiling-face-with-halo}}
+\author{Bilal Ergüç}
+
+\begin{document}
+\maketitle
+
+All the contents of this paper ,including the python code, is from \href{https://www.youtube.com/watch?v=R6cFWpinj5U}{this video} and it's comment section.
+
+\section{The Problem \emoji{face-with-monocle}}
+
+Prove that the sequence \space $7 , 77 , 777, ...$ \space \space aka \space \space $a_n = 77...7$ \space consisting of n digits has a term that is divisible by 2003.
+
+\vspace{30px}
+\section{Approach 1 : Pigeonhole Principle \emoji{thinking-face}}
+
+When we talk about divisibility with any integer $n$, we consider the possible remainders. For example when investigating divisibility by $5$ the possible remainders an integer could have are: $0 , 1 , 2 , 3 , 4$. The number 17 has a remainder of 2 , 24 has a remainder of 4 and 30 has a remainder of 0 which means it is divisible by 5.
+\\
+\\
+Notice that we don't include the numbers $5$ and on since if we talk about having a remainder of $6$ for instance, we could just take another $5$ from it and have $1$ as remainder so that every integer when divided by 5 will have a remainder $0 , 1 , 2 , 3 , 4$.
+\\
+\\
+We denote this remainder relation with $ 17 \equiv  2 (mod5)$ and $\space 30 \equiv  0 (mod5)$.
+Now we see that for divisibility by 2003, the possible remainders any integer could have are: $0, 1 , 2 , ..., 2002$.
+\\
+\\
+With this build up we start our proof. Our proof will be by contradiction, meaning we will assume something and that assumption will (hopefully) lead us to a contradiction which will conclude that our assumption was wrong.
+\\
+\\
+\\
+
+
+
+
+
+
+
+
+\textbf{Proof:}
+\\
+We are trying to prove that \textit{at least one} number in our sequence is divisible by 2003, so we will assume that none of them are divisible by 2003 and aim to have a contradiction from that assumption. Since all numbers in our sequence is not divisible by 2003, they all can have the remainders $1 , 2 , ... ,2002$.
+\\
+\\
+If we think our numbers $7 , 77 , 777, ...$ as balls and remainders as boxes , when we distribute 2003 or more balls to 2002 boxes ; \textit{at least one box} will contain \textit{more then one} ball. Meaning in our case if we choose 2003 or more numbers from our sequence, at least two of them will have the same remainder when they are divided by 2003.
+\\
+\\
+Lets name two of the numbers that has the same remainder $a_i$ and $a_j$. Note that $i \neq j$ since all the numbers in our sequence are different from eachother. Without loss of generality lets assume $i < j$. Now since $a_i$ and $a_j$ has the same remainder $mod\space 2003$ , their difference will be $0\space mod2003$ which means $a_j - a_i$ is divisible by 2003.
+
+\[a_j \equiv k\space(mod \space 2003)\]
+\[a_i \equiv k\space(mod\space2003)\]
+\[\Rightarrow a_j - a_i \equiv 0\space(mod\space2003)\]
+\\
+We can see that the number $a_j - a_i$ is in the form of 77...700...0 consisting of $j-i$ digits of 7 and $i $ digits of 0. We can express it as $a_{j-i}\cdot 10^{i}$.
+\\
+\\
+A quick example: 
+\[a_5 = 77777 , a_3 = 777 \ and \ a_5 - a_3 = a_{2} \cdot 10^3 = 77000\]
+\\
+For a final wrap up of the proof: the number $a_j - a_i = a_{j-i}\cdot 10^{i}$ is divisible by 2003 and $10^{i}$ has no common factors with 2003 hence 2003 must divide $a_{j-i}$ which is an element of our sequence (contradiction).
+\\
+\\
+If we take a look at the proof start to finish, we assumed no element in our sequence is divisible by 2003 and from that assumption we found that there is an element in our sequence thats divisible by 2003.This is a contradiction hence our assumption was wrong , which means there \textit{exists} a number in our sequence that is divisible by 2003
+\\
+\\
+What this approach tells us is that there exist such a number but it doesnt tell anything about what that number is , how many times this number occurs or what is the the smallest number in our sequence that's divisible by 2003.
+
+
+
+
+\vspace{30px}
+\section{Approach 2 : Fermat's Little Theorem \emoji{smiling-face-with-hearts}}
+Fermat's Little Theorem tells us that for a prime number $p$ and an integer $m$ the following congruence holds:
+\[m^p \equiv m \space (mod \space p)\]
+\\
+If $m$ and $p$ are coprime , meaning they share no common factor , we have the following congruence:
+
+\[m^{p-1} \equiv 1 \space (mod \space p)\]
+\\
+Since 2003 is a prime number and 10 has no common factor with 2003, we can apply Fermat's Little Theorem for $m=10$ and $p=2003$.
+
+\[10^{2002} \equiv 1 \space (mod \space 2003) \Rightarrow 10^{2002} - 1 \equiv 0 \space (mod \space 2003) \]
+\\
+The number $10^{2002} - 1$ is 999...9 with 2002 digits of nines. If we divide this by 9 we get 111...1 consisting of 2002 ones
+\\
+\\
+2003 divides $10^{2002} - 1 = 9\cdot111...1$ , 2003 and 9 has no common factors therefore 2003 also divides the number 111...1 .
+\\
+\\
+
+We can  see that every term in our sequence can be written as:
+\[a_n = 7\cdot(\frac{10^n - 1}{9})\]
+For $n = 2002$ it is evident that 2003 divides $a_{2002}$.
+\\
+\\
+Thus we have determined such a number in our sequence. But this still doesn't tell us if this is the smallest number that satisfies this condition. By help of a nifty python code (not mine) we can see that the first number in our sequence that's divisible by 2003 is $a_{1001}$.  
+\\
+\\
+
+\begin{mintedbox}{python}
+x=7
+counter = 1
+found=False
+while not found:
+     found = x % 2003 == 0
+     if not found:
+          x = (x * 10) + 7
+          counter +=1
+print("%d" % counter)
+\end{mintedbox}
+>>>> 1001
+\end{document}
